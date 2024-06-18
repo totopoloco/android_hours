@@ -6,28 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-            android:id="@+id/labelEntryHour"
-            android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/entryHourLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/entry_hour"
-            android:layout_marginTop="56dp"
-            app:layout_constraintEnd_toStartOf="@+id/entryHour"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="64dp" />
-
-    <EditText
-            android:id="@+id/entryHour"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:ems="10"
-            android:inputType="number"
-            android:layout_marginTop="40dp"
-            android:hint="@string/enter_hour"
-            android:importantForAutofill="no"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="48dp" />
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="52dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/entryHour"
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+                android:hint="@string/enter_hour" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/entryStartLunchLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/entryHourLayout"
+            app:layout_constraintEnd_toEndOf="@+id/entryHourLayout"
+            app:layout_constraintTop_toBottomOf="@+id/entryHourLayout"
+            android:layout_marginTop="32dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/entryStartLunch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/enter_start_lunch" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/entryLunchBreakLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/entryHourLayout"
+            app:layout_constraintEnd_toEndOf="@+id/entryHourLayout"
+            app:layout_constraintTop_toBottomOf="@+id/entryStartLunchLayout"
+            android:layout_marginTop="32dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/entryLunchBreak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/enter_lunch_break" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

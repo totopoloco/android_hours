@@ -13,4 +13,8 @@
     <string name="enter_hour">Introducir hora</string>
     <string name="entry_hour">Hora de entrada</string>
     <string name="invalid_value">Valor inválido</string>
+    <string name="start_lunch">Comienzo de la pausa de mediodía</string>
+    <string name="enter_start_lunch">Introducir comienzo de la pausa de mediodía</string>
+    <string name="lunch_break">Pausa de mediodía</string>
+    <string name="enter_lunch_break">Introducir pausa de mediodía</string>
 </resources>

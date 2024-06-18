@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createView(NavigationView navigationView) {
         NavController navController = getNavController();
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+      NavigationUI.setupActionBarWithNavController(this, navController, this.mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
 
-        if (NavigationUI.navigateUp(getNavController(), mAppBarConfiguration)) {
+      if (NavigationUI.navigateUp(getNavController(), this.mAppBarConfiguration)) {
             return true;
         }
 

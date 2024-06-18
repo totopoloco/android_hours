@@ -13,4 +13,8 @@
     <string name="enter_hour">Enter Hour</string>
     <string name="entry_hour">Entry hour</string>
     <string name="invalid_value">Invalid value</string>
+    <string name="start_lunch">Start Lunch</string>
+    <string name="enter_start_lunch">Enter Start Lunch</string>
+    <string name="lunch_break">Lunch Break</string>
+    <string name="enter_lunch_break">Enter Lunch Break</string>
 </resources>
