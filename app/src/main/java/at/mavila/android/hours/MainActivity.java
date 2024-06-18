@@ -3,7 +3,6 @@ package at.mavila.android.hours;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,26 +10,27 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
+import at.mavila.android.hours.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-
-import at.mavila.android.hours.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
 
+      //Call the super class onCreate to complete the creation of activity like
         super.onCreate(savedInstanceState);
 
+      // Inflate the layout using the view binding and set the content view
         final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(getToolbar(binding));
 
 
+      // Set the floating action button to show a snack bar
         binding.appBarMain.fab.setOnClickListener(view -> getSnackbar(view).show());
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         return binding.appBarMain.toolbar;
     }
 
-    private static Snackbar getSnackbar(View view) {
+  private static Snackbar getSnackbar(final View view) {
         return Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab);

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Horas</string>
+    <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Encabezado de navegación</string>
+    <string name="action_settings">Configuraciones</string>
+
+    <string name="menu_home">Inicio</string>
+    <string name="menu_gallery">Galería</string>
+    <string name="menu_slideshow">Presentación</string>
+    <string name="enter_hour">Introducir hora</string>
+    <string name="entry_hour">Hora de entrada</string>
+    <string name="invalid_value">Valor inválido</string>
+</resources>

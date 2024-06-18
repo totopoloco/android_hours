@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+apply plugin: 'io.freefair.lombok'
+
+
 android {
     namespace 'at.mavila.android.hours'
     compileSdk 34
@@ -43,4 +46,10 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+
+    annotationProcessor libs.lombok
+    implementation libs.lombok
+
+    implementation libs.commons.lang3
 }

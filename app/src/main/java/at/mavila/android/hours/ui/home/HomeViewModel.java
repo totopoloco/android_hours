@@ -1,19 +1,12 @@
 package at.mavila.android.hours.ui.home;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import lombok.Getter;
 
+@Getter
 public class HomeViewModel extends ViewModel {
-
-    private final MutableLiveData<String> mText;
-
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
-    }
+  private final MutableLiveData<Integer> entryHour = new MutableLiveData<>(9);
+  private final MutableLiveData<Integer> lunchHour = new MutableLiveData<>(13);
+  private final MutableLiveData<Integer> breakTime = new MutableLiveData<>(30);
 }
