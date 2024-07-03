@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/entryHourLayout"
@@ -18,11 +18,12 @@
             android:layout_marginTop="52dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/entryHour"
+                android:id="@+id/entryHour"
                 android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-                android:hint="@string/enter_hour" />
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/enter_hour"
+                android:textColorHint="#616161" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
