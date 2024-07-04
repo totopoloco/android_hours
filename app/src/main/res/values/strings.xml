@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home">Hours</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="enter_hour">Enter Hour</string>
@@ -18,4 +18,8 @@
     <string name="lunch_break">Lunch Break</string>
     <string name="enter_lunch_break">Enter Lunch Break</string>
     <string name="calculate">Calculate</string>
+    <string name="Start">Start</string>
+    <string name="End">End</string>
+    <string name="Duration">Duration</string>
+    <string name="Duration_Hours">Duration in hours</string>
 </resources>

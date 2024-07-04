@@ -44,4 +44,5 @@ public class HomeFragment extends Fragment {
     super.onDestroyView();
     this.binding = null;
   }
+
 }

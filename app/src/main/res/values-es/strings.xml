@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Encabezado de navegación</string>
     <string name="action_settings">Configuraciones</string>
 
-    <string name="menu_home">Inicio</string>
+    <string name="menu_home">Hours</string>
     <string name="menu_gallery">Galería</string>
     <string name="menu_slideshow">Presentación</string>
     <string name="enter_hour">Introducir hora</string>
@@ -18,4 +18,8 @@
     <string name="lunch_break">Pausa de mediodía</string>
     <string name="enter_lunch_break">Introducir pausa de mediodía</string>
     <string name="calculate">Calcular</string>
+    <string name="Start">Comienzo</string>
+    <string name="End">Final</string>
+    <string name="Duration">Duración</string>
+    <string name="Duration_Hours">Duración en horas</string>
 </resources>
