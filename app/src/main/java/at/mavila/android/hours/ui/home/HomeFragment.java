@@ -31,6 +31,8 @@ public class HomeFragment extends Fragment {
 
     binding.entryStartLunch.setText(String.valueOf(homeViewModel.getLunchHour().getValue()));
     binding.entryStartLunch.addTextChangedListener(new EntryStartLunchTextWatcher(this.binding, homeViewModel, this));
+
+    binding.calculateButton.setOnClickListener(new ClickButtonListener(this.binding));
   }
 
   private HomeViewModel getHomeViewModel() {

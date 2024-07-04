@@ -17,4 +17,5 @@
     <string name="enter_start_lunch">Enter Start Lunch</string>
     <string name="lunch_break">Lunch Break</string>
     <string name="enter_lunch_break">Enter Lunch Break</string>
+    <string name="calculate">Calculate</string>
 </resources>

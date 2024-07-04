@@ -17,4 +17,5 @@
     <string name="enter_start_lunch">Introducir comienzo de la pausa de mediodía</string>
     <string name="lunch_break">Pausa de mediodía</string>
     <string name="enter_lunch_break">Introducir pausa de mediodía</string>
+    <string name="calculate">Calcular</string>
 </resources>
