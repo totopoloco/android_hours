@@ -2,6 +2,7 @@ package at.mavila.android.hours.ui.home;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -103,22 +104,30 @@ public class ClickButtonListener implements View.OnClickListener {
     // Create a TextView for each column
     TextView startView = new TextView(context);
     startView.setText(start);
+    setTextSize(startView);
     row.addView(startView);
 
     TextView endView = new TextView(context);
     endView.setText(end);
+    setTextSize(endView);
     row.addView(endView);
 
     TextView durationView = new TextView(context);
     durationView.setText(duration);
+    setTextSize(durationView);
     row.addView(durationView);
 
     TextView durationInHoursView = new TextView(context);
     durationInHoursView.setText(durationInHours);
+    setTextSize(durationInHoursView);
     row.addView(durationInHoursView);
 
     // Add the TableRow to the TableLayout
     table.addView(row);
+  }
+
+  private static void setTextSize(final TextView textView) {
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
   }
 
   private void addHeadersToTable(Context context, TableLayout table) {
