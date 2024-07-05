@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 
@@ -43,6 +44,8 @@ public class ClickButtonListener implements View.OnClickListener {
 
   @Override
   public void onClick(View v) {
+
+    final Context context = v.getContext();
 
     String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
     String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
@@ -78,14 +81,34 @@ public class ClickButtonListener implements View.OnClickListener {
     // Clear the table
     tableLayout.removeAllViews();
     //Add headers to the table
-    addHeadersToTable(v.getContext(), tableLayout);
+
+    addHeadersToTable(context, tableLayout);
     // Add the rows to the table
     hourRoot.getRanges().forEach(range -> addToRow(v, range, tableLayout));
     // ----------------------------------
     // End of table results
 
+    // Display the summary in the text view for this purpose
+    displaySummary(v, context, hourRoot);
+  }
 
-    // Use the values for whatever processing is needed
+  private static void displaySummary(View v, Context context, HourRoot hourRoot) {
+    String hoursLabel = context.getResources().getString(R.string.Total_Hours);
+    String hoursHHMMLabel = context.getResources().getString(R.string.Total_hours_in_hh_mm);
+    String lunchTimeLabel = context.getResources().getString(R.string.Expected_lunch_time_in_hh_mm);
+
+    // Format the summary text and display it
+    TextView summaryTextView = v.getRootView().findViewById(R.id.summaryTextView);
+    summaryTextView.setText(getSummaryText(hoursLabel, hourRoot, hoursHHMMLabel, lunchTimeLabel));
+    summaryTextView.setVisibility(View.VISIBLE);
+  }
+
+  private static String getSummaryText(String hoursLabel, HourRoot hourRoot, String hoursHHMMLabel, String lunchTimeLabel) {
+    return String.format(Locale.getDefault(),
+        "%s: %.2f\n%s: %s\n%s: %s",
+        hoursLabel, hourRoot.getTotalHours(),
+        hoursHHMMLabel, hourRoot.getTotalHoursInHHMM(),
+        lunchTimeLabel, hourRoot.getExpectedLunchTimeInHHMM());
   }
 
   private void addToRow(View v, HoursRangeMetadata range, TableLayout tableLayout) {

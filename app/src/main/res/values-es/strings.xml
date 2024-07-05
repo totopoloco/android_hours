@@ -22,4 +22,7 @@
     <string name="End">Final</string>
     <string name="Duration">Duración</string>
     <string name="Duration_Hours">Duración en horas</string>
+    <string name="Total_Hours">Horas totales</string>
+    <string name="Total_hours_in_hh_mm">Horas totales en HH:MM</string>
+    <string name="Expected_lunch_time_in_hh_mm">Hora de la comida en HH:MM</string>
 </resources>

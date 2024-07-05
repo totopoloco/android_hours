@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 
@@ -46,7 +47,7 @@ public class CalculationService {
             .builder()
             .ranges(buildDetails(ranges))
             .totalHours(TimeUtilitiesService.convertFromMinutesToHours(totalMinutes))
-            .totalHoursInHHMM(String.format("%02d:%02d", hours, minutes))
+            .totalHoursInHHMM(String.format(Locale.getDefault(), "%02d:%02d", hours, minutes))
             .expectedLunchTimeInHHMM(lunchBreakStart.toString())
             .extraComment("OK")
             .build();
