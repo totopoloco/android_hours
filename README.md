@@ -105,7 +105,6 @@ These are the current screenshots of the application, these are subject to chang
 <img alt="Icon for the application shown in the main screen" width="350" src="./screenshots/Screenshot_2024-07-08-12-48-16-22_cfb0cd85db164d38a17abdfd43fc1555.jpg" title="Home screen" />
 
 ### With validation of the inputs
-
 <img alt="Icon for the application shown in the main screen" width="350" src="./screenshots/Screenshot_2024-07-08-12-48-39-46_cfb0cd85db164d38a17abdfd43fc1555.jpg" title="Home screen" />
 
 ### After the calculation is done
