@@ -53,3 +53,43 @@ sequenceDiagram
   Note right of A: Minutes of breaks between of ranges (Integer)
   Note right of A: Maximum hour of the day to finish work (String, HH:mm)   
 ```
+
+## Calculate working hours sequence diagram
+
+```mermaid  
+sequenceDiagram
+  participant U as User
+  participant A as Android App
+  A ->> U: Show home view
+  U ->> A: Set start time
+  A ->> A: Validate inputs
+  alt invalid inputs
+    A -->> U: Exclamation mark next to field end
+  end
+  U ->> A: Set expected lunch time
+  A ->> A: Validate inputs
+  alt invalid inputs
+    A -->> U: Exclamation mark next to field end
+  end
+  U ->> A: Set minutes of lunch
+  A ->> A: Validate inputs
+  alt invalid inputs
+    A -->> U: Exclamation mark next to field end
+  end
+  U ->> A: Press "Calculate" button
+  A ->> A: Calculate working hours
+  A ->> U: Display results
+  opt Share Results
+    U ->> A: Press share button
+    A ->> U: Display Android screen for sharing content
+    U ->> A: Chooses an option to share (Android default functionality)
+  end
+  opt Clean Calcalation
+    U ->> A: Press clean screen
+    A ->> U: Clears data in the screen for the calculation
+  end
+  opt Reset
+    U ->> A: Press reset button
+    A ->> U: Clears data in the screen for the calculation and reset to default values
+  end
+```
