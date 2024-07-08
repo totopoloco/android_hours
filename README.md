@@ -100,4 +100,4 @@ These are the current screenshots of the application, these are subject to chang
 
 ### Home screen
 
-![Home Screen](./screenshots/Screenshot_2024-07-04-18-47-47-77_cfb0cd85db164d38a17abdfd43fc1555.jpg)
+![Icon for the application shown in the main screen](./screenshots/Screenshot_2024-07-08-12-49-49-99_b783bf344239542886fee7b48fa4b892.jpg "Home screen")
