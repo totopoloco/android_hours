@@ -93,3 +93,11 @@ sequenceDiagram
     A ->> U: Clears data in the screen for the calculation and reset to default values
   end
 ```
+
+## Screenshots
+
+These are the current screenshots of the application, these are subject to change in the future.
+
+### Home screen
+
+![Home Screen](./screenshots/Screenshot_2024-07-04-18-47-47-77_cfb0cd85db164d38a17abdfd43fc1555.jpg)
