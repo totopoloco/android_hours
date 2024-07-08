@@ -31,10 +31,10 @@ An Android application based on the original project (on server side) to calcula
 As of now, the application is developed in Java and uses Gradle as a build system. The application
 is developed using Android Studio.
 
-## Configuration sequence diagram
-
 Thanks to [Mermaid](https://mermaidjs.github.io/) to provide the plugin to produce the sequence
-diagrams:
+diagrams
+
+## Configuration sequence diagram
 
 ```mermaid 
 sequenceDiagram
