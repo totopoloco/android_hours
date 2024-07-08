@@ -100,4 +100,4 @@ These are the current screenshots of the application, these are subject to chang
 
 ### Home screen
 
-![Icon for the application shown in the main screen](./screenshots/Screenshot_2024-07-08-12-49-49-99_b783bf344239542886fee7b48fa4b892.jpg "Home screen")
+<img alt="Icon for the application shown in the main screen" height="100" src="./screenshots/Screenshot_2024-07-08-12-49-49-99_b783bf344239542886fee7b48fa4b892.jpg" title="Home screen" width="100"/>
