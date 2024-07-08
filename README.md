@@ -98,6 +98,8 @@ sequenceDiagram
 
 These are the current screenshots of the application, these are subject to change in the future.
 
-### Home screen
+### Application icon in the Android device
 
-<img alt="Icon for the application shown in the main screen" width="300" src="./screenshots/Screenshot_2024-07-08-12-49-49-99_b783bf344239542886fee7b48fa4b892.jpg" title="Home screen" />
+<img alt="Icon for the application shown in the main screen" width="350" src="./screenshots/Screenshot_2024-07-08-12-49-49-99_b783bf344239542886fee7b48fa4b892.jpg" title="Home screen" />
+### Home screen as shown when the application is opened
+<img alt="Icon for the application shown in the main screen" width="350" src="./screenshots/Screenshot_2024-07-08-12-48-16-22_cfb0cd85db164d38a17abdfd43fc1555.jpg" title="Home screen" />
