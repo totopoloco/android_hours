@@ -2,8 +2,8 @@
     <string name="app_name">Horas</string>
     <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
     <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Calculadora de horas trabajadas</string>
+    <string name="nav_header_subtitle">marcot@avilac.eu</string>
     <string name="nav_header_desc">Encabezado de navegación</string>
     <string name="action_settings">Configuraciones</string>
 
