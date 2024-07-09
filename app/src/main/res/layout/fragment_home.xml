@@ -145,14 +145,15 @@
 
     <Button
             android:id="@+id/calculateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="179dp"
+            android:layout_height="82dp"
             android:text="@string/calculate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guideline"
             android:layout_marginTop="16dp"
-            android:background="#0D47A1" />
+            android:textAllCaps="true"
+            android:background="#800D47A1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
