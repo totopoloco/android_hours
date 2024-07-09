@@ -14,10 +14,12 @@ import java.util.Random;
 public final class TimeUtilitiesService {
 
   private static final List<Integer> QUARTERS;
+  private static final List<Integer> EVERY_FIVE_MINUTES;
   private static final ThreadLocal<Random> RANDOM;
 
   static {
     QUARTERS = of(0, 15, 30, 45);
+    EVERY_FIVE_MINUTES = of(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55);
     RANDOM = ThreadLocal.withInitial(Random::new);
   }
 
@@ -30,8 +32,12 @@ public final class TimeUtilitiesService {
    *
    * @return the randomized minute in the hour, between 0 and 59
    */
-  public static int randomizeMinuteInHour() {
-    return QUARTERS.get(RANDOM.get().nextInt(QUARTERS.size()));
+  public static int randomizeMinuteInHourInQuarters() {
+    return QUARTERS.get(Objects.requireNonNull(RANDOM.get()).nextInt(QUARTERS.size()));
+  }
+
+  public static int randomizeMinuteInHourForEveryFiveMinutes() {
+    return EVERY_FIVE_MINUTES.get(Objects.requireNonNull(RANDOM.get()).nextInt(EVERY_FIVE_MINUTES.size()));
   }
 
   public static Integer getMinutesOfLunchBreakParameter(Integer minutesOfLunchBreak) {

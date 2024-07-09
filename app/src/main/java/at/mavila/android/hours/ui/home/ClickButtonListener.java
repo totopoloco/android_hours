@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -33,6 +34,10 @@ public class ClickButtonListener implements View.OnClickListener {
   private final static int MINUTES_OF_BREAK_BETWEEN_RANGES;
   private final static int MAXIMUM_HOUR_TO_WORK_IN_A_DAY;
   private final static int MINUTES_PER_DAY_OF_WORK;
+  /**
+   * If true, the movement of the time will be in quarters, otherwise every 5 minutes.
+   */
+  private final static boolean MOVEMENT_IN_QUARTERS;
 
   //TODO: We need to get the following values from the settings of the application that will be implemented.
   static {
@@ -40,6 +45,7 @@ public class ClickButtonListener implements View.OnClickListener {
     MAXIMUM_MINUTES_IN_A_ROW = 240;
     MINUTES_OF_BREAK_BETWEEN_RANGES = 30;
     MAXIMUM_HOUR_TO_WORK_IN_A_DAY = 20;
+    MOVEMENT_IN_QUARTERS = true;
   }
 
 
@@ -64,9 +70,10 @@ public class ClickButtonListener implements View.OnClickListener {
         MINUTES_OF_BREAK_BETWEEN_RANGES,
         MAXIMUM_HOUR_TO_WORK_IN_A_DAY
     );
+    final LocalTime lunchStart = getLunchStart(entryStartLunch);
 
-    final LocalTime lunchStart = LocalTime.of(Integer.parseInt(entryStartLunch), TimeUtilitiesService.randomizeMinuteInHour());
-    final List<HoursRangeDetail> rangeDetails = getHoursRangeDetails(calculationService, entryLunchBreak, entryHour, lunchStart);
+    final List<HoursRangeDetail> rangeDetails =
+        getHoursRangeDetails(calculationService, entryLunchBreak, entryHour, lunchStart, MOVEMENT_IN_QUARTERS);
 
     final long totalMinutes = TimeUtilitiesService.getTotalMinutes(rangeDetails);
     final long hours = totalMinutes / 60;   // since both are ints, you get an int
@@ -76,26 +83,59 @@ public class ClickButtonListener implements View.OnClickListener {
 
     Log.d("HomeFragment", "HourRoot: " + hourRoot.toString());
 
-    // Table results
-    // ----------------------------------
     // Get the table layout
     TableLayout tableLayout = v.getRootView().findViewById(R.id.resultTable);
     // Clear the table
     tableLayout.removeAllViews();
+    // If there is the key pad, hide it
+    hideKeyPadIfPresent(v);
+    //----------------------------------
     //Add headers to the table
-
     addHeadersToTable(context, tableLayout);
     // Add the rows to the table
     List<HoursRangeMetadata> ranges = hourRoot.getRanges();
 
+    //Adjust the guideline percentage
     setGuidelinePercentage(v, ranges);
 
+    //Populate the table with the results
     ranges.forEach(range -> addToRow(v, range, tableLayout));
     // ----------------------------------
     // End of table results
 
     // Display the summary in the text view for this purpose
     displaySummary(v, context, hourRoot);
+  }
+
+  private static LocalTime getLunchStart(String entryStartLunch) {
+
+    if (MOVEMENT_IN_QUARTERS) {
+      return
+          LocalTime.of(Integer.parseInt(entryStartLunch), TimeUtilitiesService.randomizeMinuteInHourInQuarters());
+    }
+
+    return
+        LocalTime.of(Integer.parseInt(entryStartLunch), TimeUtilitiesService.randomizeMinuteInHourForEveryFiveMinutes());
+
+  }
+
+  private static void hideKeyPadIfPresent(View v) {
+    Object systemService = v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+    if (!(systemService instanceof InputMethodManager)) {
+      return;
+    }
+
+    if (Objects.isNull(v.getWindowToken())) {
+      return;
+    }
+
+    ((InputMethodManager) systemService)
+        .hideSoftInputFromWindow
+            (
+                v.getWindowToken(),
+                InputMethodManager.RESULT_UNCHANGED_SHOWN
+            );
   }
 
   private static void setGuidelinePercentage(View v, List<HoursRangeMetadata> ranges) {
@@ -196,11 +236,15 @@ public class ClickButtonListener implements View.OnClickListener {
   private static List<HoursRangeDetail> getHoursRangeDetails(final CalculationService calculationService,
                                                              final String entryLunchBreak,
                                                              final String entryHour,
-                                                             final LocalTime lunchStart) {
+                                                             final LocalTime lunchStart,
+                                                             final boolean movementInQuarters /*TODO: Must come from properties*/) {
+
+
     return calculationService.calculateRanges(
         Integer.parseInt(entryLunchBreak),
         Integer.parseInt(entryHour),
-        TimeUtilitiesService.randomizeMinuteInHour(),
+        movementInQuarters ? TimeUtilitiesService.randomizeMinuteInHourInQuarters() :
+            TimeUtilitiesService.randomizeMinuteInHourForEveryFiveMinutes(),
         LocalDateTime.of(LocalDate.now(), lunchStart));
   }
 }

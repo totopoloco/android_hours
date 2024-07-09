@@ -17,7 +17,6 @@ public class CalculationService {
   private final int minutesOfBreakBetweenRanges;
   private final int maximumHourToWorkInADay;
 
-
   public List<HoursRangeDetail> calculateRanges(final Integer minutesOfLunchBreak,
                                                 final int entry,
                                                 final int entryMinute,
