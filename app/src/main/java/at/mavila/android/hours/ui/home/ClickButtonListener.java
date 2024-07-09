@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import androidx.constraintlayout.widget.Guideline;
 import at.mavila.android.hours.R;
 import at.mavila.android.hours.calculation.CalculationService;
 import at.mavila.android.hours.calculation.HourRoot;
@@ -47,9 +48,10 @@ public class ClickButtonListener implements View.OnClickListener {
 
     final Context context = v.getContext();
 
-    String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
-    String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
-    String entryStartLunch = Objects.requireNonNull(this.fragmentHomeBinding.entryStartLunch.getText()).toString();
+    final String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
+    final String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
+    final String entryStartLunch = Objects.requireNonNull(this.fragmentHomeBinding.entryStartLunch.getText()).toString();
+
 
     Log.d("HomeFragment", "Calculate button clicked. " +
                           "Entry hour: " + entryHour + ", " +
@@ -84,12 +86,25 @@ public class ClickButtonListener implements View.OnClickListener {
 
     addHeadersToTable(context, tableLayout);
     // Add the rows to the table
-    hourRoot.getRanges().forEach(range -> addToRow(v, range, tableLayout));
+    List<HoursRangeMetadata> ranges = hourRoot.getRanges();
+
+    setGuidelinePercentage(v, ranges);
+
+    ranges.forEach(range -> addToRow(v, range, tableLayout));
     // ----------------------------------
     // End of table results
 
     // Display the summary in the text view for this purpose
     displaySummary(v, context, hourRoot);
+  }
+
+  private static void setGuidelinePercentage(View v, List<HoursRangeMetadata> ranges) {
+    Guideline guideline = v.getRootView().findViewById(R.id.guideline);
+    if (ranges.size() > 2) {
+      guideline.setGuidelinePercent(0.7f);
+      return;
+    }
+    guideline.setGuidelinePercent(0.65f);
   }
 
   private static void displaySummary(View v, Context context, HourRoot hourRoot) {

@@ -6,166 +6,153 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
 
-    <androidx.cardview.widget.CardView
-            android:id="@+id/textInputCardView"
+
+    <ScrollView
+            android:id="@+id/mainScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="1dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp">
+            app:layout_constraintBottom_toTopOf="@id/guideline">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="260dp">
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/entryHourLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/entryHour"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:hint="@string/enter_hour"
-                        android:maxWidth="360dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/entryStartLunchLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@+id/entryHourLayout"
-                    app:layout_constraintEnd_toEndOf="@+id/entryHourLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/entryHourLayout"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/entryStartLunch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:hint="@string/enter_start_lunch"
-                        android:maxWidth="360dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/entryLunchBreakLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@+id/entryHourLayout"
-                    app:layout_constraintEnd_toEndOf="@+id/entryHourLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/entryStartLunchLayout"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/entryLunchBreak"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:hint="@string/enter_lunch_break"
-                        android:maxWidth="360dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/entryLunchBreakLayout"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="10dp">
-
-                <Button
-                        android:id="@+id/calculateButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/calculate"
-                        android:layout_gravity="center" />
-
-            </androidx.cardview.widget.CardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-            android:id="@+id/resultCardView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="1dp"
-            app:layout_constraintStart_toStartOf="@id/textInputCardView"
-            app:layout_constraintEnd_toEndOf="@id/textInputCardView"
-            app:layout_constraintTop_toBottomOf="@id/textInputCardView">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/resultLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TableLayout
-                    android:id="@+id/resultTable"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:stretchColumns="*"
-                    android:padding="10dp">
-
-            </TableLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/summaryCardView"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="@id/resultCardView"
-            app:layout_constraintTop_toBottomOf="@id/resultCardView">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                android:id="@+id/mainConstraintLayout">
 
             <TextView
-                    android:id="@+id/summaryTextView"
+                    android:id="@+id/titleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:visibility="invisible"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/Please_input"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                    android:id="@+id/inputFieldsLinearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/entryHourLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/entryHour"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:hint="@string/enter_hour"
+                            android:maxWidth="360dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/entryStartLunchLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@+id/entryHourLayout"
+                        app:layout_constraintEnd_toEndOf="@+id/entryHourLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/entryHourLayout"
+                        android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/entryStartLunch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:hint="@string/enter_start_lunch"
+                            android:maxWidth="360dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/entryLunchBreakLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@+id/entryHourLayout"
+                        app:layout_constraintEnd_toEndOf="@+id/entryHourLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/entryStartLunchLayout"
+                        android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/entryLunchBreak"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:hint="@string/enter_lunch_break"
+                            android:maxWidth="360dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <!-- Add a table here to display the result when the user presses the button -->
+                <TableLayout
+                        android:id="@+id/resultTable"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:stretchColumns="*"
+                        android:padding="10dp">
+
+                </TableLayout>
+
+
+                <!-- Together (in really below) with the table display a summary of the calculation -->
+                <TextView
+                        android:id="@+id/summaryTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:layout_marginStart="12dp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/resultTable" />
+
+            </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp" />
+
+    <Button
+            android:id="@+id/calculateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calculate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            android:layout_marginTop="16dp"
+            android:background="#0D47A1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
