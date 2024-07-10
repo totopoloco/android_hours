@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 
 @AllArgsConstructor
 public class ClickButtonListener implements View.OnClickListener {
@@ -95,8 +96,14 @@ public class ClickButtonListener implements View.OnClickListener {
     // Add the rows to the table
     List<HoursRangeMetadata> ranges = hourRoot.getRanges();
 
+    //Some defense programming (ranges should be empty at most).
+    // Validate the ranges for null or empty
+    if (CollectionUtils.isEmpty(ranges)) {
+      return;
+    }
+
     //Adjust the guideline percentage
-    setGuidelinePercentage(v, ranges);
+    setGuidelinePercentage(v, ranges.size());
 
     //Populate the table with the results
     ranges.forEach(range -> addToRow(v, range, tableLayout));
@@ -138,9 +145,10 @@ public class ClickButtonListener implements View.OnClickListener {
             );
   }
 
-  private static void setGuidelinePercentage(View v, List<HoursRangeMetadata> ranges) {
+  private static void setGuidelinePercentage(View v, int rangesSize) {
     Guideline guideline = v.getRootView().findViewById(R.id.guideline);
-    if (ranges.size() > 2) {
+
+    if (rangesSize > 2) {
       guideline.setGuidelinePercent(0.7f);
       return;
     }

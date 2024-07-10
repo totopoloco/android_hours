@@ -26,4 +26,5 @@
     <string name="Total_hours_in_hh_mm">Horas totales en HH:MM</string>
     <string name="Expected_lunch_time_in_hh_mm">Hora de la comida en HH:MM</string>
     <string name="Please_input">Por favor introduzca los datos</string>
+    <string name="menu_settings">Configuración</string>
 </resources>

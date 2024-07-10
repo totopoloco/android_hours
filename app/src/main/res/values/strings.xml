@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Working hours calculator</string>
-    <string name="nav_header_subtitle">marcot@avilac.eu</string>
+    <string name="nav_header_subtitle" translatable="false">marcotavilac@pm.me</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -26,4 +26,5 @@
     <string name="Total_hours_in_hh_mm">Total Hours in HH:MM</string>
     <string name="Expected_lunch_time_in_hh_mm">Expected lunch time in HH:MM</string>
     <string name="Please_input">Please input data</string>
+    <string name="menu_settings">Settings</string>
 </resources>

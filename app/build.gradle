@@ -54,5 +54,6 @@ dependencies {
     implementation libs.lombok
 
     implementation libs.commons.lang3
+    implementation libs.commons.collections4
     implementation libs.material
 }
