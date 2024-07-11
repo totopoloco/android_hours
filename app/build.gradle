@@ -56,4 +56,10 @@ dependencies {
     implementation libs.commons.lang3
     implementation libs.commons.collections4
     implementation libs.material
+
+    implementation libs.room
+    annotationProcessor libs.room.compiler
+
+    implementation libs.kotlinx.coroutines
+    implementation libs.kotlinx.core
 }
