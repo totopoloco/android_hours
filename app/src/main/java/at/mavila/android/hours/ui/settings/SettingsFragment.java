@@ -30,7 +30,7 @@ public class SettingsFragment extends Fragment {
     final SettingsViewModel settingsViewModel = getSettingsViewModel();
     this.binding = FragmentSettingsBinding.inflate(inflater, container, false);
     final View root = this.binding.getRoot();
-    configureMinutesPerDayOfWork(settingsViewModel);
+    configureFields(settingsViewModel);
 
     return root;
   }
@@ -58,7 +58,61 @@ public class SettingsFragment extends Fragment {
     return settingsViewModel;
   }
 
-  private void configureMinutesPerDayOfWork(final SettingsViewModel settingsViewModel) {
+  private void configureFields(final SettingsViewModel settingsViewModel) {
+    //------------------------------------------------------
+    minutesPerDay(settingsViewModel);
+    //------------------------------------------------------
+    minutesPerRow(settingsViewModel);
+    //------------------------------------------------------
+    breaks(settingsViewModel);
+    //------------------------------------------------------
+    final TextInputEditText maximumHour = this.binding.maximumHourOfTheDayToEndWorkInputEditText;
+    settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
+      if (Objects.isNull(settings)) {
+        return;
+      }
+      maximumHour.setText(settings.getMaximumHourToWorkInADay());
+
+    });
+    maximumHour.addTextChangedListener(new HHMMTextInputWatcher(settingsViewModel, maximumHour));
+
+  }
+
+  private void breaks(SettingsViewModel settingsViewModel) {
+    final TextInputEditText minutesOfBreakBetweenRanges = binding.minutesOfBreakBetweenRangesEditInputText;
+    settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
+      if (Objects.isNull(settings)) {
+        return;
+      }
+      minutesOfBreakBetweenRanges.setText(String.valueOf(settings.getMinutesOfBreakBetweenRanges()));
+
+    });
+    minutesOfBreakBetweenRanges.addTextChangedListener(
+        getTextInputWatcher(
+            settingsViewModel,
+            SettingsField.MINUTES_OF_BREAK_BETWEEN_RANGES,
+            minutesOfBreakBetweenRanges)
+    );
+  }
+
+  private void minutesPerRow(SettingsViewModel settingsViewModel) {
+    final TextInputEditText hoursInARow = binding.maximumMinutesInARowEditInputText;
+    settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
+      if (Objects.isNull(settings)) {
+        return;
+      }
+      hoursInARow.setText(String.valueOf(settings.getMaximumMinutesInARow()));
+
+    });
+    hoursInARow.addTextChangedListener(
+        getTextInputWatcher(
+            settingsViewModel,
+            SettingsField.MAXIMUM_MINUTES_IN_A_ROW,
+            hoursInARow)
+    );
+  }
+
+  private void minutesPerDay(SettingsViewModel settingsViewModel) {
     final TextInputEditText minutesPerDayOfWorkEditInputText = binding.minutesPerDayOfWorkEditInputText;
     settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
       if (Objects.isNull(settings)) {

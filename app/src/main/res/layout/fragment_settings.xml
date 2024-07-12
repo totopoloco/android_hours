@@ -103,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/maximumHourOfTheDayToEndWorkInputEditText"
-                android:inputType="time"
+                android:inputType="text"
                 android:hint="@string/maximum_hour_of_the_day_to_end_work_hh_mm"
                 android:maxWidth="360dp" />
 

@@ -40,7 +40,7 @@ public class SettingsRepository {
         defaultSettings.setMinutesPerDayOfWork(462);
         defaultSettings.setMaximumMinutesInARow(240);
         defaultSettings.setMinutesOfBreakBetweenRanges(30);
-        defaultSettings.setMaximumHourToWorkInADay(20);
+        defaultSettings.setMaximumHourToWorkInADay("20:00");
         defaultSettings.setMovementInQuarters(true);
         insertSettings(defaultSettings);
       }

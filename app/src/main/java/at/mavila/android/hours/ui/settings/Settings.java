@@ -20,7 +20,7 @@ public class Settings {
   public int minutesPerDayOfWork;
   public int maximumMinutesInARow;
   public int minutesOfBreakBetweenRanges;
-  public int maximumHourToWorkInADay; //in HH format
+  public String maximumHourToWorkInADay; //in HH format
   public boolean movementInQuarters;
 
 }

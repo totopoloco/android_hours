@@ -35,10 +35,15 @@ public class HomeFragment extends Fragment {
     binding.entryStartLunch.setText(String.valueOf(homeViewModel.getLunchHour().getValue()));
     binding.entryStartLunch.addTextChangedListener(new EntryStartLunchTextWatcher(this.binding, homeViewModel, this));
 
-    final SettingsRepository settingsRepository = new SettingsRepository(requireContext());
-    final SettingsViewModelFactory factory = new SettingsViewModelFactory(settingsRepository);
-    final SettingsViewModel settingsViewModel = new ViewModelProvider(this, factory).get(SettingsViewModel.class);
-    binding.calculateButton.setOnClickListener(new ClickButtonListener(this.binding, settingsViewModel));
+    binding.calculateButton.setOnClickListener(new ClickButtonListener(this.binding, getSettingsViewModel()));
+  }
+
+  private SettingsViewModel getSettingsViewModel() {
+    return
+        new ViewModelProvider(
+            this,
+            new SettingsViewModelFactory(new SettingsRepository(requireContext())))
+            .get(SettingsViewModel.class);
   }
 
   private HomeViewModel getHomeViewModel() {
