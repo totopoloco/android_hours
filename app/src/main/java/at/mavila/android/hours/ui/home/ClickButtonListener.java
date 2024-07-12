@@ -16,6 +16,7 @@ import at.mavila.android.hours.calculation.HoursRangeDetail;
 import at.mavila.android.hours.calculation.HoursRangeMetadata;
 import at.mavila.android.hours.calculation.TimeUtilitiesService;
 import at.mavila.android.hours.databinding.FragmentHomeBinding;
+import at.mavila.android.hours.ui.settings.SettingsViewModel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,12 +30,12 @@ import org.apache.commons.collections4.CollectionUtils;
 public class ClickButtonListener implements View.OnClickListener {
 
   private final FragmentHomeBinding fragmentHomeBinding;
+  private final SettingsViewModel settingsViewModel;
 
 
   private final static int MAXIMUM_MINUTES_IN_A_ROW;
   private final static int MINUTES_OF_BREAK_BETWEEN_RANGES;
   private final static int MAXIMUM_HOUR_TO_WORK_IN_A_DAY;
-  private final static int MINUTES_PER_DAY_OF_WORK;
   /**
    * If true, the movement of the time will be in quarters, otherwise every 5 minutes.
    */
@@ -42,7 +43,6 @@ public class ClickButtonListener implements View.OnClickListener {
 
   //TODO: We need to get the following values from the settings of the application that will be implemented.
   static {
-    MINUTES_PER_DAY_OF_WORK = 462;
     MAXIMUM_MINUTES_IN_A_ROW = 240;
     MINUTES_OF_BREAK_BETWEEN_RANGES = 30;
     MAXIMUM_HOUR_TO_WORK_IN_A_DAY = 20;
@@ -51,67 +51,77 @@ public class ClickButtonListener implements View.OnClickListener {
 
 
   @Override
-  public void onClick(View v) {
+  public void onClick(final View v) {
 
-    final Context context = v.getContext();
+    this.settingsViewModel.getSettings().observeForever(settings -> {
 
-    final String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
-    final String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
-    final String entryStartLunch = Objects.requireNonNull(this.fragmentHomeBinding.entryStartLunch.getText()).toString();
+      final Context context = v.getContext();
+      final String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
+      final String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
+      final String entryStartLunch = Objects.requireNonNull(this.fragmentHomeBinding.entryStartLunch.getText()).toString();
 
 
-    Log.d("HomeFragment", "Calculate button clicked. " +
-                          "Entry hour: " + entryHour + ", " +
-                          "Entry lunch break: " + entryLunchBreak + ", " +
-                          "Entry start lunch: " + entryStartLunch);
+      Log.d("HomeFragment", "Calculate button clicked. " +
+                            "Entry hour: " + entryHour + ", " +
+                            "Entry lunch break: " + entryLunchBreak + ", " +
+                            "Entry start lunch: " + entryStartLunch);
 
-    final CalculationService calculationService = new CalculationService(
-        MINUTES_PER_DAY_OF_WORK,
-        MAXIMUM_MINUTES_IN_A_ROW,
-        MINUTES_OF_BREAK_BETWEEN_RANGES,
-        MAXIMUM_HOUR_TO_WORK_IN_A_DAY
-    );
-    final LocalTime lunchStart = getLunchStart(entryStartLunch);
+      int minutesPerDayOfWork = settings.getMinutesPerDayOfWork();
 
-    final List<HoursRangeDetail> rangeDetails =
-        getHoursRangeDetails(calculationService, entryLunchBreak, entryHour, lunchStart, MOVEMENT_IN_QUARTERS);
+      Log.d("HomeFragment", "Minutes per day of work: " + minutesPerDayOfWork);
 
-    final long totalMinutes = TimeUtilitiesService.getTotalMinutes(rangeDetails);
-    final long hours = totalMinutes / 60;   // since both are ints, you get an int
-    final long minutes = totalMinutes % 60;
+      final CalculationService calculationService = new CalculationService(
+          minutesPerDayOfWork,
+          MAXIMUM_MINUTES_IN_A_ROW,
+          MINUTES_OF_BREAK_BETWEEN_RANGES,
+          MAXIMUM_HOUR_TO_WORK_IN_A_DAY
+      );
+      final LocalTime lunchStart = getLunchStart(entryStartLunch);
 
-    final HourRoot hourRoot = calculationService.buildRoot(rangeDetails, totalMinutes, hours, minutes, lunchStart);
+      final List<HoursRangeDetail> rangeDetails =
+          getHoursRangeDetails(calculationService, entryLunchBreak, entryHour, lunchStart, MOVEMENT_IN_QUARTERS);
 
-    Log.d("HomeFragment", "HourRoot: " + hourRoot.toString());
+      final long totalMinutes = TimeUtilitiesService.getTotalMinutes(rangeDetails);
+      final long hours = totalMinutes / 60;   // since both are ints, you get an int
+      final long minutes = totalMinutes % 60;
 
-    // Get the table layout
-    TableLayout tableLayout = v.getRootView().findViewById(R.id.resultTable);
-    // Clear the table
-    tableLayout.removeAllViews();
-    // If there is the key pad, hide it
-    hideKeyPadIfPresent(v);
-    //----------------------------------
-    //Add headers to the table
-    addHeadersToTable(context, tableLayout);
-    // Add the rows to the table
-    List<HoursRangeMetadata> ranges = hourRoot.getRanges();
+      final HourRoot hourRoot = calculationService.buildRoot(rangeDetails, totalMinutes, hours, minutes, lunchStart);
 
-    //Some defense programming (ranges should be empty at most).
-    // Validate the ranges for null or empty
-    if (CollectionUtils.isEmpty(ranges)) {
-      return;
-    }
+      Log.d("HomeFragment", "HourRoot: " + hourRoot.toString());
 
-    //Adjust the guideline percentage
-    setGuidelinePercentage(v, ranges.size());
+      // Get the table layout
+      TableLayout tableLayout = v.getRootView().findViewById(R.id.resultTable);
+      // Clear the table
+      tableLayout.removeAllViews();
+      // If there is the key pad, hide it
+      hideKeyPadIfPresent(v);
+      //----------------------------------
+      //Add headers to the table
+      addHeadersToTable(context, tableLayout);
+      // Add the rows to the table
+      List<HoursRangeMetadata> ranges = hourRoot.getRanges();
 
-    //Populate the table with the results
-    ranges.forEach(range -> addToRow(v, range, tableLayout));
-    // ----------------------------------
-    // End of table results
+      //Some defense programming (ranges should be empty at most).
+      // Validate the ranges for null or empty
+      if (CollectionUtils.isEmpty(ranges)) {
+        return;
+      }
 
-    // Display the summary in the text view for this purpose
-    displaySummary(v, context, hourRoot);
+      //Adjust the guideline percentage
+      setGuidelinePercentage(v, ranges.size());
+
+      //Populate the table with the results
+      ranges.forEach(range -> addToRow(v, range, tableLayout));
+      // ----------------------------------
+      // End of table results
+
+      // Display the summary in the text view for this purpose
+      displaySummary(v, context, hourRoot);
+
+
+    });
+
+
   }
 
   private static LocalTime getLunchStart(String entryStartLunch) {

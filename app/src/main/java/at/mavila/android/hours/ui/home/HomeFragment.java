@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import at.mavila.android.hours.databinding.FragmentHomeBinding;
+import at.mavila.android.hours.ui.settings.SettingsRepository;
+import at.mavila.android.hours.ui.settings.SettingsViewModel;
+import at.mavila.android.hours.ui.settings.SettingsViewModelFactory;
 
 public class HomeFragment extends Fragment {
 
@@ -32,7 +35,10 @@ public class HomeFragment extends Fragment {
     binding.entryStartLunch.setText(String.valueOf(homeViewModel.getLunchHour().getValue()));
     binding.entryStartLunch.addTextChangedListener(new EntryStartLunchTextWatcher(this.binding, homeViewModel, this));
 
-    binding.calculateButton.setOnClickListener(new ClickButtonListener(this.binding));
+    final SettingsRepository settingsRepository = new SettingsRepository(requireContext());
+    final SettingsViewModelFactory factory = new SettingsViewModelFactory(settingsRepository);
+    final SettingsViewModel settingsViewModel = new ViewModelProvider(this, factory).get(SettingsViewModel.class);
+    binding.calculateButton.setOnClickListener(new ClickButtonListener(this.binding, settingsViewModel));
   }
 
   private HomeViewModel getHomeViewModel() {

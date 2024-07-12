@@ -27,4 +27,10 @@
     <string name="Expected_lunch_time_in_hh_mm">Expected lunch time in HH:MM</string>
     <string name="Please_input">Please input data</string>
     <string name="menu_settings">Settings</string>
+    <string name="general_settings">General Settings</string>
+    <string name="minutes_per_day_of_work">Minutes per day of work</string>
+    <string name="maximum_minutes_in_a_row">Maximum minutes in a row</string>
+    <string name="minutes_of_break_between_ranges">Minutes of a break between work</string>
+    <string name="maximum_hour_of_the_day_to_end_work_hh_mm">Hour of the day allowed to end work (HH:mm)</string>
+    <string name="movement_option_text">Movement of minutes in quarters or every 5 minutes</string>
 </resources>

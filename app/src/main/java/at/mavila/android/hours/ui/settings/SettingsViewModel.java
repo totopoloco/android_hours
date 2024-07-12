@@ -39,29 +39,44 @@ public class SettingsViewModel extends ViewModel {
   }
 
   public void updateSettings(final String newValue, final SettingsField settingsField) {
-    Settings settings = this.mutableLiveData.getValue();
-    if (Objects.isNull(settings)) {
-      Log.w("SettingsViewModel", "Settings are null");
-      return;
+
+    try {
+      Settings settings = this.mutableLiveData.getValue();
+      if (Objects.isNull(settings)) {
+        Log.w("SettingsViewModel", "Settings are null");
+        return;
+      }
+      final int parsedInt = Integer.parseInt(newValue);
+      switch (settingsField) {
+        case MINUTES_PER_DAY_OF_WORK:
+          if (parsedInt < 1) {
+            settings.setMinutesPerDayOfWork(1);
+            break;
+          }
+          if (parsedInt > 1440) {
+            settings.setMinutesPerDayOfWork(1440);
+            break;
+          }
+
+          settings.setMinutesPerDayOfWork(parsedInt);
+          break;
+        case MAXIMUM_MINUTES_IN_A_ROW:
+          settings.setMaximumMinutesInARow(parsedInt);
+          break;
+        case MINUTES_OF_BREAK_BETWEEN_RANGES:
+          settings.setMinutesOfBreakBetweenRanges(parsedInt);
+          break;
+        case MAXIMUM_HOUR_TO_WORK_IN_A_DAY:
+          settings.setMaximumHourToWorkInADay(parsedInt);
+          break;
+        case MOVEMENT_IN_QUARTERS:
+          settings.setMovementInQuarters(Boolean.parseBoolean(newValue));
+          break;
+      }
+      this.settingsRepository.updateSettings(settings);
+    } catch (Exception exception) {
+      Log.w("SettingsViewModel", "Error updating settings", exception);
     }
-    switch (settingsField) {
-      case MINUTES_PER_DAY_OF_WORK:
-        settings.setMinutesPerDayOfWork(Integer.parseInt(newValue));
-        break;
-      case MAXIMUM_MINUTES_IN_A_ROW:
-        settings.setMaximumMinutesInARow(Integer.parseInt(newValue));
-        break;
-      case MINUTES_OF_BREAK_BETWEEN_RANGES:
-        settings.setMinutesOfBreakBetweenRanges(Integer.parseInt(newValue));
-        break;
-      case MAXIMUM_HOUR_TO_WORK_IN_A_DAY:
-        settings.setMaximumHourToWorkInADay(Integer.parseInt(newValue));
-        break;
-      case MOVEMENT_IN_QUARTERS:
-        settings.setMovementInQuarters(Boolean.parseBoolean(newValue));
-        break;
-    }
-    this.settingsRepository.updateSettings(settings);
   }
 
 }

@@ -68,7 +68,17 @@ public class SettingsFragment extends Fragment {
 
     });
     minutesPerDayOfWorkEditInputText.addTextChangedListener(
-        new TextInputWatcher(settingsViewModel, SettingsField.MINUTES_PER_DAY_OF_WORK));
+        getTextInputWatcher(
+            settingsViewModel,
+            SettingsField.MINUTES_PER_DAY_OF_WORK,
+            minutesPerDayOfWorkEditInputText)
+    );
+  }
+
+  private static TextInputWatcher getTextInputWatcher(final SettingsViewModel settingsViewModel,
+                                                      final SettingsField settingsField,
+                                                      final TextInputEditText minutesPerDayOfWorkEditInputText) {
+    return new TextInputWatcher(settingsViewModel, settingsField, minutesPerDayOfWorkEditInputText);
   }
 
   @Override

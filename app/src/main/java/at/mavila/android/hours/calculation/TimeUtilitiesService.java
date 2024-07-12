@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
@@ -77,7 +78,7 @@ public final class TimeUtilitiesService {
     long duration = getDurationInMinutes(start, end);
     long hours = duration / 60;
     long minutes = duration % 60;
-    return String.format("%02d:%02d", hours, minutes);
+    return String.format(Locale.getDefault(), "%02d:%02d", hours, minutes);
   }
 
   /**
