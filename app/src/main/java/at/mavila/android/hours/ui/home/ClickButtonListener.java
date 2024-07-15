@@ -1,5 +1,7 @@
 package at.mavila.android.hours.ui.home;
 
+import static java.math.BigInteger.ZERO;
+
 import android.content.Context;
 import android.util.Log;
 import android.util.TypedValue;
@@ -16,6 +18,7 @@ import at.mavila.android.hours.calculation.HoursRangeDetail;
 import at.mavila.android.hours.calculation.HoursRangeMetadata;
 import at.mavila.android.hours.calculation.TimeUtilitiesService;
 import at.mavila.android.hours.databinding.FragmentHomeBinding;
+import at.mavila.android.hours.ui.settings.Settings;
 import at.mavila.android.hours.ui.settings.SettingsViewModel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +26,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -31,102 +36,109 @@ public class ClickButtonListener implements View.OnClickListener {
 
   private final FragmentHomeBinding fragmentHomeBinding;
   private final SettingsViewModel settingsViewModel;
+  private static final Pattern HH_MM_REGEX;
+  private static final int MAXIMUM_HOUR_TO_WORK_IN_A_DAY;
 
-
-  private final static int MAXIMUM_MINUTES_IN_A_ROW;
-  private final static int MINUTES_OF_BREAK_BETWEEN_RANGES;
-  private final static int MAXIMUM_HOUR_TO_WORK_IN_A_DAY;
-  /**
-   * If true, the movement of the time will be in quarters, otherwise every 5 minutes.
-   */
-  private final static boolean MOVEMENT_IN_QUARTERS;
-
-  //TODO: We need to get the following values from the settings of the application that will be implemented.
   static {
-    MAXIMUM_MINUTES_IN_A_ROW = 240;
-    MINUTES_OF_BREAK_BETWEEN_RANGES = 30;
+    HH_MM_REGEX = Pattern.compile("^([01]?[0-9]|2[0-3]):([0-5][0-9])$");
     MAXIMUM_HOUR_TO_WORK_IN_A_DAY = 20;
-    MOVEMENT_IN_QUARTERS = true;
   }
 
 
   @Override
   public void onClick(final View v) {
-
-    this.settingsViewModel.getSettings().observeForever(settings -> {
-
-      final Context context = v.getContext();
-      final String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
-      final String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
-      final String entryStartLunch = Objects.requireNonNull(this.fragmentHomeBinding.entryStartLunch.getText()).toString();
-
-
-      Log.d("HomeFragment", "Calculate button clicked. " +
-                            "Entry hour: " + entryHour + ", " +
-                            "Entry lunch break: " + entryLunchBreak + ", " +
-                            "Entry start lunch: " + entryStartLunch);
-
-      int minutesPerDayOfWork = settings.getMinutesPerDayOfWork();
-
-      Log.d("HomeFragment", "Minutes per day of work: " + minutesPerDayOfWork);
-
-      final CalculationService calculationService = new CalculationService(
-          minutesPerDayOfWork,
-          MAXIMUM_MINUTES_IN_A_ROW,
-          MINUTES_OF_BREAK_BETWEEN_RANGES,
-          MAXIMUM_HOUR_TO_WORK_IN_A_DAY
-      );
-      final LocalTime lunchStart = getLunchStart(entryStartLunch);
-
-      final List<HoursRangeDetail> rangeDetails =
-          getHoursRangeDetails(calculationService, entryLunchBreak, entryHour, lunchStart, MOVEMENT_IN_QUARTERS);
-
-      final long totalMinutes = TimeUtilitiesService.getTotalMinutes(rangeDetails);
-      final long hours = totalMinutes / 60;   // since both are ints, you get an int
-      final long minutes = totalMinutes % 60;
-
-      final HourRoot hourRoot = calculationService.buildRoot(rangeDetails, totalMinutes, hours, minutes, lunchStart);
-
-      Log.d("HomeFragment", "HourRoot: " + hourRoot.toString());
-
-      // Get the table layout
-      TableLayout tableLayout = v.getRootView().findViewById(R.id.resultTable);
-      // Clear the table
-      tableLayout.removeAllViews();
-      // If there is the key pad, hide it
-      hideKeyPadIfPresent(v);
-      //----------------------------------
-      //Add headers to the table
-      addHeadersToTable(context, tableLayout);
-      // Add the rows to the table
-      List<HoursRangeMetadata> ranges = hourRoot.getRanges();
-
-      //Some defense programming (ranges should be empty at most).
-      // Validate the ranges for null or empty
-      if (CollectionUtils.isEmpty(ranges)) {
-        return;
-      }
-
-      //Adjust the guideline percentage
-      setGuidelinePercentage(v, ranges.size());
-
-      //Populate the table with the results
-      ranges.forEach(range -> addToRow(v, range, tableLayout));
-      // ----------------------------------
-      // End of table results
-
-      // Display the summary in the text view for this purpose
-      displaySummary(v, context, hourRoot);
-
-
-    });
-
-
+    this.settingsViewModel.getSettings().observeForever(settings -> clickHandler(v, settings));
   }
 
-  private static LocalTime getLunchStart(String entryStartLunch) {
+  private void clickHandler(View v, Settings settings) {
+    final Context context = v.getContext();
+    final String entryHour = Objects.requireNonNull(this.fragmentHomeBinding.entryHour.getText()).toString();
+    final String entryLunchBreak = Objects.requireNonNull(this.fragmentHomeBinding.entryLunchBreak.getText()).toString();
+    final String entryStartLunch = Objects.requireNonNull(this.fragmentHomeBinding.entryStartLunch.getText()).toString();
 
-    if (MOVEMENT_IN_QUARTERS) {
+
+    Log.d("HomeFragment", "Calculate button clicked. " +
+                          "Entry hour: " + entryHour + ", " +
+                          "Entry lunch break: " + entryLunchBreak + ", " +
+                          "Entry start lunch: " + entryStartLunch);
+
+    final int minutesPerDayOfWork = settings.getMinutesPerDayOfWork();
+    final boolean movementInQuarters = settings.isMovementInQuarters();
+    final int maximumMinutesInARow = settings.getMaximumMinutesInARow();
+    final int minutesOfBreakBetweenRanges = settings.getMinutesOfBreakBetweenRanges();
+    final String maximumHourToWorkInADay = settings.getMaximumHourToWorkInADay();
+
+    final CalculationService calculationService = new CalculationService(
+        minutesPerDayOfWork,
+        maximumMinutesInARow,
+        minutesOfBreakBetweenRanges,
+        getMaxHour(HH_MM_REGEX.matcher(maximumHourToWorkInADay))
+    );
+
+    final LocalTime lunchStart = getLunchStart(entryStartLunch, movementInQuarters);
+
+    final List<HoursRangeDetail> rangeDetails =
+        getHoursRangeDetails(calculationService, entryLunchBreak, entryHour, lunchStart, movementInQuarters);
+
+    final long totalMinutes = TimeUtilitiesService.getTotalMinutes(rangeDetails);
+    final long hours = totalMinutes / 60;   // since both are ints, you get an int
+    final long minutes = totalMinutes % 60;
+
+    final HourRoot hourRoot = calculationService.buildRoot(rangeDetails, totalMinutes, hours, minutes, lunchStart);
+
+    Log.d("HomeFragment", "HourRoot: " + hourRoot.toString());
+
+    // Get the table layout
+    TableLayout tableLayout = v.getRootView().findViewById(R.id.resultTable);
+    // Clear the table
+    tableLayout.removeAllViews();
+    // If there is the key pad, hide it
+    hideKeyPadIfPresent(v);
+    //----------------------------------
+    //Add headers to the table
+    addHeadersToTable(context, tableLayout);
+    // Add the rows to the table
+    List<HoursRangeMetadata> ranges = hourRoot.getRanges();
+
+    //Some defense programming (ranges should be empty at most).
+    // Validate the ranges for null or empty
+    if (CollectionUtils.isEmpty(ranges)) {
+      return;
+    }
+
+    //Adjust the guideline percentage
+    setGuidelinePercentage(v, ranges.size());
+
+    //Populate the table with the results
+    ranges.forEach(range -> addToRow(v, range, tableLayout));
+    // ----------------------------------
+    // End of table results
+
+    // Display the summary in the text view for this purpose
+    displaySummary(v, context, hourRoot);
+  }
+
+  /**
+   * Get the maximum hour to work in a day.
+   *
+   * @param matcher The matcher
+   * @return The maximum hour to work in a day (default is 20)
+   */
+  private static LocalTime getMaxHour(Matcher matcher) {
+    try {
+      if (matcher.find()) {
+        return LocalTime.of(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+      }
+      return LocalTime.of(MAXIMUM_HOUR_TO_WORK_IN_A_DAY, ZERO.intValue());
+    } catch (Exception e) {
+      Log.w("ClickButtonListener", "Invalid maximum hour to work in a day. Using default value.", e);
+      return LocalTime.of(MAXIMUM_HOUR_TO_WORK_IN_A_DAY, ZERO.intValue());
+    }
+  }
+
+  private static LocalTime getLunchStart(String entryStartLunch, boolean movementInQuarters) {
+
+    if (movementInQuarters) {
       return
           LocalTime.of(Integer.parseInt(entryStartLunch), TimeUtilitiesService.randomizeMinuteInHourInQuarters());
     }
@@ -255,7 +267,7 @@ public class ClickButtonListener implements View.OnClickListener {
                                                              final String entryLunchBreak,
                                                              final String entryHour,
                                                              final LocalTime lunchStart,
-                                                             final boolean movementInQuarters /*TODO: Must come from properties*/) {
+                                                             final boolean movementInQuarters) {
 
 
     return calculationService.calculateRanges(

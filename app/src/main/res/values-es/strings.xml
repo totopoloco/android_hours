@@ -32,5 +32,5 @@
   <string name="maximum_minutes_in_a_row">Minutos máximos de trabajo antes de la pausa</string>
   <string name="minutes_of_break_between_ranges">Minutos de descanso dentro de las horas de trabajo</string>
   <string name="maximum_hour_of_the_day_to_end_work_hh_mm">Hora máxima permitida (HH:mm)</string>
-  <string name="movement_option_text">Cálculo de las horas en cuartos o cada 5 minutos.</string>
+  <string name="movement_option_text">Cálculo de comienzo cada cuarto de hora</string>
 </resources>

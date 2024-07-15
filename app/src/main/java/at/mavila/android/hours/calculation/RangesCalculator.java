@@ -32,7 +32,7 @@ public final class RangesCalculator {
                                                        final long minutesOfLunchBreak,
                                                        final long maximumMinutesInARow,
                                                        final long minutesOfBreakBetweenRanges,
-                                                       final int maximumHourToWorkInADay) {
+                                                       final LocalTime maximumHourToWorkInADay) {
 
     List<HoursRangeDetail> rangeDetails = new ArrayList<>();
 
@@ -69,12 +69,12 @@ public final class RangesCalculator {
     return rangeDetails;
   }
 
-  private static Predicate<HoursRangeDetail> getHoursRangeDetailPredicate(int maximumHourToWorkInADay) {
+  private static Predicate<HoursRangeDetail> getHoursRangeDetailPredicate(final LocalTime maximumHourToWorkInADay) {
     return range -> hasReachedMaximTimeToWorkForTheDay(maximumHourToWorkInADay, range);
   }
 
-  private static boolean hasReachedMaximTimeToWorkForTheDay(int maximumHourToWorkInADay, HoursRangeDetail range) {
-    return range.getStart().toLocalTime().isAfter(LocalTime.of(maximumHourToWorkInADay, 0));
+  private static boolean hasReachedMaximTimeToWorkForTheDay(final LocalTime maximumHourToWorkInADay, HoursRangeDetail range) {
+    return range.getStart().toLocalTime().isAfter(maximumHourToWorkInADay);
   }
 
 

@@ -32,5 +32,5 @@
     <string name="maximum_minutes_in_a_row">Maximum minutes in a row</string>
     <string name="minutes_of_break_between_ranges">Minutes of a break between work</string>
     <string name="maximum_hour_of_the_day_to_end_work_hh_mm">Hour of the day allowed to end work (HH:mm)</string>
-    <string name="movement_option_text">Movement of minutes in quarters or every 5 minutes</string>
+    <string name="movement_option_text">Starts in every quarter of the hour</string>
 </resources>

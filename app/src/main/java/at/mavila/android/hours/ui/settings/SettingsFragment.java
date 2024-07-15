@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import at.mavila.android.hours.databinding.FragmentSettingsBinding;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.Objects;
 
@@ -75,6 +76,20 @@ public class SettingsFragment extends Fragment {
 
     });
     maximumHour.addTextChangedListener(new HHMMTextInputWatcher(settingsViewModel, maximumHour));
+
+    //------------------------------------------------------
+    SwitchMaterial switchMovementInQuartersOption = this.binding.switchMovementInQuartersOption;
+    settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
+      if (Objects.isNull(settings)) {
+        return;
+      }
+      switchMovementInQuartersOption.setChecked(settings.isMovementInQuarters());
+
+    });
+    switchMovementInQuartersOption.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> settingsViewModel.updateSettings(Boolean.toString(isChecked),
+            SettingsField.MOVEMENT_IN_QUARTERS));
+    //------------------------------------------------------
 
   }
 
