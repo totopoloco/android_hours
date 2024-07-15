@@ -126,10 +126,10 @@ public class ClickButtonListener implements View.OnClickListener {
    */
   private static LocalTime getMaxHour(Matcher matcher) {
     try {
-      if (matcher.find()) {
-        return LocalTime.of(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
-      }
-      return LocalTime.of(MAXIMUM_HOUR_TO_WORK_IN_A_DAY, ZERO.intValue());
+      return matcher.find() ?
+          LocalTime.of(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)))
+          :
+          LocalTime.of(MAXIMUM_HOUR_TO_WORK_IN_A_DAY, ZERO.intValue());
     } catch (Exception e) {
       Log.w("ClickButtonListener", "Invalid maximum hour to work in a day. Using default value.", e);
       return LocalTime.of(MAXIMUM_HOUR_TO_WORK_IN_A_DAY, ZERO.intValue());
