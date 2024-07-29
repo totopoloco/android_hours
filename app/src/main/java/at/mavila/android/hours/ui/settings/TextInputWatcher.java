@@ -3,6 +3,7 @@ package at.mavila.android.hours.ui.settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import com.google.android.material.textfield.TextInputEditText;
+import java.util.function.Function;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -15,14 +16,13 @@ import org.apache.commons.lang3.StringUtils;
  * @author marcoavila
  */
 @RequiredArgsConstructor
-public class TextInputWatcher implements TextWatcher, OnSettingsChangeListener {
+public class TextInputWatcher implements TextWatcher {
 
   @NonNull
-  private final SettingsViewModel settingsViewModel;
-  @NonNull
-  private final SettingsField settingsField;
-  @NonNull
   private final TextInputEditText editText;
+
+  @NonNull
+  private final Function<String, String> filterFunction;
 
   private boolean isUpdating = false;
   private String previousText = "";
@@ -59,7 +59,10 @@ public class TextInputWatcher implements TextWatcher, OnSettingsChangeListener {
     final String newValue = s.toString();
     if (valuesHaveChanged(newValue)) {
       this.isUpdating = true;
-      settingsViewModel.updateSettings(newValue, this.settingsField);
+
+      final String errorMessage = this.filterFunction.apply(newValue);
+      editText.setError(errorMessage);
+
       // Calculate expected new caret position based on text length change
       editText.setSelection(newValue.length());
       this.isUpdating = false;
@@ -73,8 +76,4 @@ public class TextInputWatcher implements TextWatcher, OnSettingsChangeListener {
   }
 
 
-  @Override
-  public void onSettingsChanged(String newValue) {
-    this.settingsViewModel.updateSettings(newValue, this.settingsField);
-  }
 }

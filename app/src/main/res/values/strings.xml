@@ -33,4 +33,5 @@
     <string name="minutes_of_break_between_ranges">Minutes of a break between work</string>
     <string name="maximum_hour_of_the_day_to_end_work_hh_mm">Hour of the day allowed to end work (HH:mm)</string>
     <string name="movement_option_text">Starts in every quarter of the hour</string>
+    <string name="save">Save</string>
 </resources>

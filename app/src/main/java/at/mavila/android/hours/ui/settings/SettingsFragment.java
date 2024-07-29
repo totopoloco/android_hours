@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import at.mavila.android.hours.databinding.FragmentSettingsBinding;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * This fragment is responsible for displaying the settings view.
@@ -86,11 +88,41 @@ public class SettingsFragment extends Fragment {
       switchMovementInQuartersOption.setChecked(settings.isMovementInQuarters());
 
     });
-    switchMovementInQuartersOption.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> settingsViewModel.updateSettings(Boolean.toString(isChecked),
-            SettingsField.MOVEMENT_IN_QUARTERS));
     //------------------------------------------------------
 
+    final MaterialButton saveButton = this.binding.saveButton;
+    settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
+      if (Objects.isNull(settings)) {
+        return;
+      }
+      saveButton.setOnClickListener(v -> {
+        settingsViewModel.updateSettings(
+            Objects.requireNonNull(this.binding.minutesPerDayOfWorkEditInputText.getText()).toString(),
+            SettingsField.MINUTES_PER_DAY_OF_WORK);
+        settingsViewModel.updateSettings(
+            Objects.requireNonNull(this.binding.maximumMinutesInARowEditInputText.getText()).toString(),
+            SettingsField.MAXIMUM_MINUTES_IN_A_ROW);
+        settingsViewModel.updateSettings(
+            Objects.requireNonNull(this.binding.minutesOfBreakBetweenRangesEditInputText.getText()).toString(),
+            SettingsField.MINUTES_OF_BREAK_BETWEEN_RANGES);
+        settingsViewModel.updateSettings(
+            Objects.requireNonNull(this.binding.maximumHourOfTheDayToEndWorkInputEditText.getText()).toString(),
+            SettingsField.MAXIMUM_HOUR_TO_WORK_IN_A_DAY
+        );
+        settingsViewModel.updateSettings(
+            Boolean.toString(this.binding.switchMovementInQuartersOption.isChecked()),
+            SettingsField.MOVEMENT_IN_QUARTERS
+        );
+
+        navigateToHomeFragment(); // Navigate to the home fragment
+
+      });
+    });
+
+  }
+
+  private void navigateToHomeFragment() {
+    requireActivity().getSupportFragmentManager().popBackStack();
   }
 
   private void breaks(SettingsViewModel settingsViewModel) {
@@ -103,10 +135,7 @@ public class SettingsFragment extends Fragment {
 
     });
     minutesOfBreakBetweenRanges.addTextChangedListener(
-        getTextInputWatcher(
-            settingsViewModel,
-            SettingsField.MINUTES_OF_BREAK_BETWEEN_RANGES,
-            minutesOfBreakBetweenRanges)
+        getTextInputWatcher(minutesOfBreakBetweenRanges, s -> null)
     );
   }
 
@@ -119,12 +148,7 @@ public class SettingsFragment extends Fragment {
       hoursInARow.setText(String.valueOf(settings.getMaximumMinutesInARow()));
 
     });
-    hoursInARow.addTextChangedListener(
-        getTextInputWatcher(
-            settingsViewModel,
-            SettingsField.MAXIMUM_MINUTES_IN_A_ROW,
-            hoursInARow)
-    );
+    hoursInARow.addTextChangedListener(getTextInputWatcher(hoursInARow, s -> null));
   }
 
   private void minutesPerDay(SettingsViewModel settingsViewModel) {
@@ -136,18 +160,15 @@ public class SettingsFragment extends Fragment {
       minutesPerDayOfWorkEditInputText.setText(String.valueOf(settings.getMinutesPerDayOfWork()));
 
     });
-    minutesPerDayOfWorkEditInputText.addTextChangedListener(
-        getTextInputWatcher(
-            settingsViewModel,
-            SettingsField.MINUTES_PER_DAY_OF_WORK,
-            minutesPerDayOfWorkEditInputText)
-    );
+    minutesPerDayOfWorkEditInputText
+        .addTextChangedListener(getTextInputWatcher(minutesPerDayOfWorkEditInputText, new MinutesPerDayOfWorkFilter()));
   }
 
-  private static TextInputWatcher getTextInputWatcher(final SettingsViewModel settingsViewModel,
-                                                      final SettingsField settingsField,
-                                                      final TextInputEditText minutesPerDayOfWorkEditInputText) {
-    return new TextInputWatcher(settingsViewModel, settingsField, minutesPerDayOfWorkEditInputText);
+  private static TextInputWatcher getTextInputWatcher(
+      final TextInputEditText minutesPerDayOfWorkEditInputText,
+      final Function<String, String> filterFunction
+  ) {
+    return new TextInputWatcher(minutesPerDayOfWorkEditInputText, filterFunction);
   }
 
   @Override
