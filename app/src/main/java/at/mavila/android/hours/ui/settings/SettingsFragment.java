@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import at.mavila.android.hours.databinding.FragmentSettingsBinding;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.Objects;
@@ -90,7 +90,7 @@ public class SettingsFragment extends Fragment {
     });
     //------------------------------------------------------
 
-    final MaterialButton saveButton = this.binding.saveButton;
+    final Button saveButton = this.binding.saveButton;
     settingsViewModel.getSettings().observe(getViewLifecycleOwner(), settings -> {
       if (Objects.isNull(settings)) {
         return;
