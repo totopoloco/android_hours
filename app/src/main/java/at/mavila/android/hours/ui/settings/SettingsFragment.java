@@ -135,7 +135,13 @@ public class SettingsFragment extends Fragment {
 
     });
     minutesOfBreakBetweenRanges.addTextChangedListener(
-        getTextInputWatcher(minutesOfBreakBetweenRanges, s -> null)
+        getTextInputWatcher(minutesOfBreakBetweenRanges,
+        /*
+        We can't have more minutes of break between ranges than minutes per day of work.
+         */
+            new MinutesInRangeOfTheDayFilter(binding,
+                "Minutes of break between ranges must be less than minutes per day of work.")
+        )
     );
   }
 
@@ -148,8 +154,14 @@ public class SettingsFragment extends Fragment {
       hoursInARow.setText(String.valueOf(settings.getMaximumMinutesInARow()));
 
     });
-    hoursInARow.addTextChangedListener(getTextInputWatcher(hoursInARow, s -> null));
+    hoursInARow.addTextChangedListener(getTextInputWatcher(hoursInARow,
+        /*
+        We can't have more minutes in a row than minutes per day of work.
+        */
+        new MinutesInRangeOfTheDayFilter(binding, "Minutes in a row must be less than minutes per day of work.")
+    ));
   }
+
 
   private void minutesPerDay(SettingsViewModel settingsViewModel) {
     final TextInputEditText minutesPerDayOfWorkEditInputText = binding.minutesPerDayOfWorkEditInputText;
